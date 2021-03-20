@@ -1,0 +1,6 @@
+coverage
+dist
+.env**
+tmp/uploads/**
+!tmp/uploads/.gitkeep
+node_modules
