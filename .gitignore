@@ -1,6 +1,7 @@
 coverage
 dist
 .env**
+!.env.example
 tmp/uploads/**
 !tmp/uploads/.gitkeep
 node_modules
