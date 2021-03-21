@@ -5,6 +5,8 @@ import AppError from '@shared/exceptions/AppError';
 
 describe('CreateUser', () => {
   beforeAll(async () => {
+    await knex.raw('DELETE FROM users');
+
     await knex.migrate.latest();
   });
 
@@ -18,12 +20,12 @@ describe('CreateUser', () => {
     const createUser = new CreateUserService(usersRepository);
 
     const user = await createUser.execute({
-      username: 'loremipsum',
+      username: 'lorem_ipsum',
       email: 'lorem@ipsum.com',
       password: 'lorem_ipsum',
     });
 
-    expect(user.username).toBe('loremipsum');
+    expect(user.username).toBe('lorem_ipsum');
   });
 
   it('should throw an error because username is in use', async () => {
@@ -32,14 +34,14 @@ describe('CreateUser', () => {
     const createUser = new CreateUserService(usersRepository);
 
     await createUser.execute({
-      username: 'loremipsum',
+      username: 'lorem_ipsum',
       email: 'lorem@ipsum.com',
       password: 'lorem_ipsum',
     });
 
     try {
       await createUser.execute({
-        username: 'loremipsum',
+        username: 'lorem_ipsum',
         email: 'lorem@ipsum.com',
         password: 'lorem_ipsum',
       });
@@ -55,14 +57,14 @@ describe('CreateUser', () => {
     const createUser = new CreateUserService(usersRepository);
 
     await createUser.execute({
-      username: 'loremipsum',
+      username: 'lorem_ipsum',
       email: 'lorem@ipsum.com',
       password: 'lorem_ipsum',
     });
 
     try {
       await createUser.execute({
-        username: 'loremipsum2',
+        username: 'lorem_ipsum2',
         email: 'lorem@ipsum.com',
         password: 'lorem_ipsum',
       });
@@ -73,7 +75,10 @@ describe('CreateUser', () => {
   });
 
   afterAll((done) => {
+    knex.raw('DELETE FROM users');
+
     knex.destroy();
+
     done();
   });
 });
