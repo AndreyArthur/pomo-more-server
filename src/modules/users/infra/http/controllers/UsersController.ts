@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import UsersRepository from '@modules/users/repositories/UsersRepository';
 import CreateUserService from '@modules/users/services/CreateUser';
 
-export default class UserController {
+export default class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { username, email, password } = request.body;
 
