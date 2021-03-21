@@ -12,7 +12,7 @@ describe('CreateUser', () => {
     await knex.raw('DELETE FROM users');
   });
 
-  it('should create a user succefully', async () => {
+  it('should create a user successfully', async () => {
     const usersRepository = new UsersRepository();
 
     const createUser = new CreateUserService(usersRepository);
