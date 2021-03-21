@@ -4,3 +4,4 @@ dist
 tmp/uploads/**
 !tmp/uploads/.gitkeep
 node_modules
+knexfile.ts
