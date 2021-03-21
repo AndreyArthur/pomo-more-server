@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
 
 import UsersRepository from '@modules/users/repositories/UsersRepository';
 import CreateUserService from '@modules/users/services/CreateUser';
@@ -14,7 +13,7 @@ export default class UsersController {
 
     const user = await createUser.execute({
       email,
-      password: await bcrypt.hash(password, 10),
+      password,
       username,
     });
 

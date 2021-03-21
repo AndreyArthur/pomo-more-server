@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import User from '@modules/users/models/User';
 import AppError from '@shared/exceptions/AppError';
@@ -31,7 +33,7 @@ export default class CreateUserService {
     const user = await this.usersRepository.save({
       email,
       username,
-      password,
+      password: await bcrypt.hash(password, 10),
     });
 
     return user;
