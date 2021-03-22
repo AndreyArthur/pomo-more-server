@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsnd -r tsconfig-paths/register --ignore-watch node_modules --transpile-only src/server.ts",
     "knex": "knex --knexfile src/config/knexfile.ts",
-    "test": "NODE_ENV=test jest --coverage"
+    "test": "NODE_ENV=test jest --coverage --runInBand"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
