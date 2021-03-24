@@ -3,5 +3,11 @@ declare namespace Express {
     user: {
       id: string;
     }
+
+    experience: {
+      points: number;
+      user_id: string;
+      password: string;
+    }
   }
 }
