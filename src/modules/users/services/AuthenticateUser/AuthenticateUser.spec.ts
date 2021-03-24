@@ -75,8 +75,8 @@ describe('AuthenticateUser', () => {
     }
   });
 
-  afterAll((done) => {
-    knex.raw('DELETE FROM users');
+  afterAll(async (done) => {
+    await knex.raw('DELETE FROM users');
 
     knex.destroy();
 

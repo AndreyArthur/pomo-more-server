@@ -5,6 +5,9 @@ interface IUsersRepository {
   findByUsername(username: string): Promise<User | undefined>;
   findById(id: string): Promise<User | undefined>;
   save(user: Pick<User, 'username' | 'password' | 'email'>): Promise<User>;
+  updateExperience(
+    user: Pick<User, 'id' | 'experience'>
+  ): Promise<User | undefined>
 }
 
 export default IUsersRepository;

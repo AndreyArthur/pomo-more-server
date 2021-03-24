@@ -54,4 +54,19 @@ export default class UsersRepository implements IUsersRepository {
 
     return users.rows[0];
   }
+
+  public async updateExperience(
+    { id, experience }: Pick<User, 'id' | 'experience'>,
+  ): Promise<User | undefined> {
+    const users = await knex.raw(`
+      UPDATE users
+      SET experience = ?
+      WHERE id = ?
+      RETURNING *
+    `, [experience, id]);
+
+    const user = users.rows[0];
+
+    return users ? user : undefined;
+  }
 }
