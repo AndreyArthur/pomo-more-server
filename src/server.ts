@@ -1,6 +1,6 @@
 import express from 'express';
 
-import app from './app';
+import app from '@root/app';
 
 const server = express();
 
