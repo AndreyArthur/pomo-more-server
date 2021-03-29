@@ -20,6 +20,8 @@ export default class UserExperienceController {
       points: request.experience.points,
     });
 
+    delete user.password;
+
     return response.send(user);
   }
 }
