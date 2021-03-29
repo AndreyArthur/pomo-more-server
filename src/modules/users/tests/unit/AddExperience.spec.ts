@@ -1,6 +1,3 @@
-import jwt from 'jsonwebtoken';
-import 'dotenv/config';
-
 import knex from '@shared/infra/knex';
 import UsersRepository from '@modules/users/repositories/UsersRepository';
 import ExperienceTokensRepository
@@ -11,22 +8,8 @@ import CreateUserService from '@modules/users/services/CreateUser';
 import AddExperienceService
   from '@modules/users/services/AddExperience';
 import AppError from '@shared/exceptions/AppError';
-
-function decodeToken(
-  token: string,
-): { user_id: string, points: number, password: string } {
-  const { sub } = jwt.verify(
-    token, process.env.JWT_SECRET as string,
-  ) as { sub: string };
-
-  const subject = JSON.parse(sub);
-
-  return {
-    user_id: subject.user_id,
-    points: subject.experiencePoints,
-    password: subject.password,
-  };
-}
+import decodeExperienceToken
+  from '@modules/users/tests/utils/decodeExperienceToken';
 
 describe('AddExperience', () => {
   beforeAll(async () => {
@@ -62,7 +45,7 @@ describe('AddExperience', () => {
       timeInMinutes: 30,
     });
 
-    const { password, user_id, points } = decodeToken(token);
+    const { password, user_id, points } = decodeExperienceToken(token);
 
     const addExperience = new AddExperienceService(
       usersRepository, experienceTokensRepository,
@@ -98,7 +81,7 @@ describe('AddExperience', () => {
       timeInMinutes: 30,
     });
 
-    const { password, points } = decodeToken(token);
+    const { password, points } = decodeExperienceToken(token);
 
     const addExperience = new AddExperienceService(
       usersRepository, experienceTokensRepository,
@@ -136,7 +119,7 @@ describe('AddExperience', () => {
       timeInMinutes: 30,
     });
 
-    const { user_id, points } = decodeToken(token);
+    const { user_id, points } = decodeExperienceToken(token);
 
     const addExperience = new AddExperienceService(
       usersRepository, experienceTokensRepository,
