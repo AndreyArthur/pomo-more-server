@@ -1,6 +1,7 @@
 import knex from '@shared/infra/knex';
 import UsersRepository from '@modules/users/repositories/UsersRepository';
 import CreateUserService from '@modules/users/services/CreateUser';
+import createUser from '@modules/users/tests/utils/createUser';
 import AppError from '@shared/exceptions/AppError';
 
 describe('CreateUser', () => {
@@ -14,36 +15,34 @@ describe('CreateUser', () => {
     await knex.raw('DELETE FROM users');
   });
 
+  beforeAll(async () => {
+    await knex.raw('DELETE FROM users');
+
+    await knex.migrate.latest();
+  });
+
+  afterEach(async () => {
+    await knex.raw('DELETE FROM users');
+  });
+
   it('should create a user successfully', async () => {
-    const usersRepository = new UsersRepository();
+    const user = await createUser();
 
-    const createUser = new CreateUserService(usersRepository);
-
-    const user = await createUser.execute({
-      username: 'lorem_ipsum',
-      email: 'lorem@ipsum.com',
-      password: 'lorem_ipsum',
-    });
-
-    expect(user.username).toBe('lorem_ipsum');
+    expect(user.username).toHaveLength(12);
   });
 
   it('should throw an error because username is in use', async () => {
     const usersRepository = new UsersRepository();
 
-    const createUser = new CreateUserService(usersRepository);
+    const createUserService = new CreateUserService(usersRepository);
 
-    await createUser.execute({
-      username: 'lorem_ipsum',
-      email: 'lorem@ipsum.com',
-      password: 'lorem_ipsum',
-    });
+    const user = await createUser();
 
     try {
-      await createUser.execute({
-        username: 'lorem_ipsum',
-        email: 'lorem@ipsum.com',
-        password: 'lorem_ipsum',
+      await createUserService.execute({
+        username: user.username,
+        email: user.email,
+        password: user.originalPassword,
       });
     } catch (err) {
       expect(err).toBeInstanceOf(AppError);
@@ -54,19 +53,15 @@ describe('CreateUser', () => {
   it('should throw an error because email is in use', async () => {
     const usersRepository = new UsersRepository();
 
-    const createUser = new CreateUserService(usersRepository);
+    const createUserService = new CreateUserService(usersRepository);
 
-    await createUser.execute({
-      username: 'lorem_ipsum',
-      email: 'lorem@ipsum.com',
-      password: 'lorem_ipsum',
-    });
+    const user = await createUser();
 
     try {
-      await createUser.execute({
-        username: 'lorem_ipsum2',
-        email: 'lorem@ipsum.com',
-        password: 'lorem_ipsum',
+      await createUserService.execute({
+        username: user.username + user.username,
+        email: user.email,
+        password: user.originalPassword,
       });
     } catch (err) {
       expect(err).toBeInstanceOf(AppError);

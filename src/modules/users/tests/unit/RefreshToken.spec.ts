@@ -1,5 +1,7 @@
+import { v4 } from 'uuid';
+
 import UsersRepository from '@modules/users/repositories/UsersRepository';
-import CreateUserService from '@modules/users/services/CreateUser';
+import createUser from '@modules/users/tests/utils/createUser';
 import knex from '@shared/infra/knex';
 import RefreshTokenService from '@modules/users/services/RefreshToken';
 import AppError from '@shared/exceptions/AppError';
@@ -18,13 +20,7 @@ describe('CreateUser', () => {
   it('should refresh token successfully', async () => {
     const usersRepository = new UsersRepository();
 
-    const createUser = new CreateUserService(usersRepository);
-
-    const createdUser = await createUser.execute({
-      username: 'lorem_ipsum',
-      email: 'lorem@ipsum.com',
-      password: 'lorem_ipsum',
-    });
+    const createdUser = await createUser();
 
     const refreshToken = new RefreshTokenService(usersRepository);
 
@@ -32,7 +28,7 @@ describe('CreateUser', () => {
       user_id: createdUser.id,
     });
 
-    expect(user.username).toBe('lorem_ipsum');
+    expect(user.username).toBe(createdUser.username);
     expect(!!token).toBe(true);
   });
 
@@ -43,7 +39,7 @@ describe('CreateUser', () => {
 
     try {
       await refreshToken.execute({
-        user_id: '098f2b0d-29fb-4f85-adb8-bbcb4955c897',
+        user_id: v4(),
       });
     } catch (err) {
       expect(err).toBeInstanceOf(AppError);
