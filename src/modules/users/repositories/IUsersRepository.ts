@@ -7,7 +7,8 @@ interface IUsersRepository {
   save(user: Pick<User, 'username' | 'password' | 'email'>): Promise<User>;
   updateExperience(
     user: Pick<User, 'id' | 'experience'>
-  ): Promise<User | undefined>
+  ): Promise<User | undefined>;
+  findAll(): Promise<User[]>;
 }
 
 export default IUsersRepository;

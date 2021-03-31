@@ -24,13 +24,17 @@ export default class UsersRepository implements IUsersRepository {
   }
 
   public async findById(id: string): Promise<User | undefined> {
-    const users = await knex.raw(
-      'SELECT * FROM users WHERE id = ?', [id],
-    );
+    try {
+      const users = await knex.raw(
+        'SELECT * FROM users WHERE id = ?', [id],
+      );
 
-    const user = users.rows[0];
+      const user = users.rows[0];
 
-    return users ? user : undefined;
+      return users ? user : undefined;
+    } catch {
+      return undefined;
+    }
   }
 
   public async save(
@@ -68,5 +72,11 @@ export default class UsersRepository implements IUsersRepository {
     const user = users.rows[0];
 
     return users ? user : undefined;
+  }
+
+  public async findAll(): Promise<User[]> {
+    const users = await knex.raw('SELECT * FROM users');
+
+    return users.rows;
   }
 }

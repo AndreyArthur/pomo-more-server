@@ -8,6 +8,7 @@ const usersController = new UsersController();
 const usersRouter = Router();
 
 usersRouter.post('/', usersController.create);
+usersRouter.get('/', usersController.index);
 usersRouter.use('/experience/', experienceRouter);
 
 export default usersRouter;
