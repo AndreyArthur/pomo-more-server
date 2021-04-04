@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import knex from '@shared/infra/knex';
-import app from '@root/app';
+import app from '@shared/infra/http/app';
 
 describe('CreateAndAuthenticadeUser', () => {
   beforeAll(async () => {

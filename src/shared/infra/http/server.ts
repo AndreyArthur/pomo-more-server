@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import app from '@root/app';
+import app from '@shared/infra/http/app';
 
 const server = express();
 
